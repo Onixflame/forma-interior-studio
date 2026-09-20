@@ -1,23 +1,23 @@
-# FORMA — локальный портфолио-проект
+# FORMA Interior Studio
 
-FORMA — вымышленная студия интерьеров и ремонта. Этот репозиторий — законченная демонстрационная версия для портфолио: три языка (EN/CS/RU), светлая/тёмная/системная тема, проекты, услуги, статьи, калькулятор в USD, локальная подборка проектов и честная demo-форма без отправки данных.
+FORMA is a fictional interior design and renovation studio. This repository contains a finished portfolio demonstration with three languages (EN/CS/RU), light/dark/system themes, projects, services, editorial content, a USD estimate calculator, a locally saved project selection, and an honest demo contact form that does not submit data.
 
-## Быстрый запуск
+## Quick Start
 
-Рекомендуется Node.js 24 и npm 11 (именно на них проект изначально собирался).
+Node.js 24 and npm 11 are recommended because the project was originally built with these versions.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-После запуска откройте `http://127.0.0.1:3000/en/`. Русская версия — `/ru/`, чешская — `/cs/`.
+Open `http://127.0.0.1:3000/en/` after the development server starts. The Russian version is available at `/ru/` and the Czech version at `/cs/`.
 
-Если `node_modules` уже существует после переноса проекта с другого компьютера или ОС, безопаснее удалить его и выполнить `npm ci` заново. Нативные пакеты Next/Sharp зависят от платформы.
+If `node_modules` was copied from another computer or operating system, remove it and run `npm ci` again. Native Next.js and Sharp packages are platform-dependent.
 
-## Проверки
+## Validation
 
-Базовые проверки:
+Run the basic checks with:
 
 ```bash
 npm run typecheck
@@ -25,96 +25,96 @@ npm run lint
 npm test
 ```
 
-Полная статическая сборка:
+Build and preview the static export with:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-`npm run preview` отдаёт только содержимое `out/` по адресу `http://localhost:3000/en/`, то есть проверяет именно экспортируемую версию сайта.
+`npm run preview` serves only the generated `out/` directory at `http://localhost:3000/en/`, which makes it useful for checking the exported version of the site.
 
-После `npm run build` E2E-тесты запускаются так:
+After `npm run build`, run the end-to-end tests with:
 
 ```bash
 npm run test:e2e
 ```
 
-Playwright сам поднимет `npm run preview`. В Windows по умолчанию используется Chrome из `C:/Program Files/Google/Chrome/Application/chrome.exe`. Если Chrome установлен в другом месте, задайте `CHROME_PATH`.
+Playwright starts `npm run preview` automatically. On Windows, the default browser path is `C:/Program Files/Google/Chrome/Application/chrome.exe`. Set `CHROME_PATH` if Chrome is installed elsewhere.
 
-## Режимы сайта
+## Site Modes
 
-`.env.example` содержит:
+`.env.example` contains:
 
 ```env
 SITE_MODE=demo
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-`SITE_MODE=demo` включает интерактивную демонстрационную форму, но она ничего не отправляет. Имя, email, телефон, сообщение и свободные заметки не записываются в `localStorage` и не уходят на сервер.
+`SITE_MODE=demo` enables the interactive demonstration form, but the form does not submit anything. Names, email addresses, phone numbers, messages, and free-form notes are not stored in `localStorage` or sent to a server.
 
-`SITE_MODE=production` намеренно блокирует приём заявки, пока не появятся реальный backend, валидация, защита от спама, хранилище, уведомления и политика обработки данных. В текущем портфолио-проекте CRM, база данных и доставка писем не подключены.
+`SITE_MODE=production` intentionally blocks lead intake until a real backend, validation, spam protection, storage, notifications, and data-processing policy are in place. This portfolio project does not include a CRM, database, or email delivery service.
 
-`NEXT_PUBLIC_SITE_URL` используется для canonical, Open Graph, sitemap и robots. Для будущей публикации его нужно заменить на реальный HTTPS-домен и только затем отдельно принять решение об индексации. Сейчас демоверсия использует `noindex,follow`.
+`NEXT_PUBLIC_SITE_URL` is used for canonical URLs, Open Graph metadata, the sitemap, and robots directives. Replace it with the real HTTPS domain before publishing. The demo currently uses `noindex,follow`.
 
-## Структура контента
+## Content Structure
 
-Основные данные отделены от UI:
+The main content is kept separate from the UI:
 
-- `src/lib/content.ts` — проекты, услуги, этапы процесса и FAQ;
-- `src/lib/articles.ts` — три статьи;
-- `src/lib/i18n.ts` — общие тексты интерфейса EN/CS/RU;
-- `src/lib/pricing.ts` — формула демонстрационного расчёта;
-- `src/lib/routes.ts` — статические маршруты;
-- `manifest.json` — исходные изображения, размеры, alt-тексты и их назначение.
+- `src/lib/content.ts` contains projects, services, process steps, and FAQs.
+- `src/lib/articles.ts` contains the three editorial articles.
+- `src/lib/i18n.ts` contains shared EN/CS/RU interface strings.
+- `src/lib/pricing.ts` contains the demonstration estimate formula.
+- `src/lib/routes.ts` contains the static routes.
+- `manifest.json` documents source images, dimensions, alt text, and intended use.
 
-Чтобы добавить проект, нужно создать запись в `projects` в `src/lib/content.ts`, добавить изображения в `public/images/projects/<folder>/` и внести их в `manifest.json`. Маршруты проекта попадут в статическую генерацию через `src/lib/routes.ts` автоматически.
+To add a project, create an entry in `projects` in `src/lib/content.ts`, add its images to `public/images/projects/<folder>/`, and register them in `manifest.json`. The project routes are included in static generation automatically through `src/lib/routes.ts`.
 
-Чтобы добавить статью, создайте запись в `src/lib/articles.ts` с уникальным `slug`, локализованными title/excerpt/sections и существующим изображением.
+To add an article, create an entry in `src/lib/articles.ts` with a unique `slug`, localized title/excerpt/sections, and an existing image.
 
-Веб-редактора/CMS в этой версии нет: контент редактируется в типизированных локальных файлах.
+This version has no web editor or CMS. Content is edited in typed local files.
 
-## Формула расчёта
+## Estimate Formula
 
-Текущие демонстрационные ставки находятся в `src/lib/pricing.ts`:
+The current demonstration rates are defined in `src/lib/pricing.ts`:
 
-- Essential: 600–800 USD/м²;
-- Complete: 900–1200 USD/м²;
-- Signature: 1400–1800 USD/м².
+- Essential: 600-800 USD/m²
+- Complete: 900-1200 USD/m²
+- Signature: 1400-1800 USD/m²
 
-К ним применяются коэффициенты состояния объекта и типа недвижимости, затем результат округляется до 100 USD. Базовый пример `70 м² / apartment / shell / Complete` даёт `63,000–84,000 USD`.
+Property-condition and property-type multipliers are applied, then the result is rounded to the nearest 100 USD. The example `70 m² / apartment / shell / Complete` produces `63,000-84,000 USD`.
 
-Это не коммерческое предложение и не реальная смета.
+This is not a commercial offer or a real quotation.
 
-## Изображения
+## Images
 
-В `public/images/projects` лежат 8 исходных PNG 1536×1024 и производные WebP 480/768/1024/1536. Скрипт `scripts/images.mjs` повторно использует готовые WebP и не требует Sharp при обычном запуске.
+`public/images/projects` contains eight source PNG files at 1536x1024 and generated WebP variants at 480/768/1024/1536 widths. The `scripts/images.mjs` script reuses existing WebP files and does not require Sharp during a normal run.
 
-Если исходный PNG заменён и нужно пересоздать производные файлы:
+If a source PNG changes and the derived files need to be regenerated:
 
 ```bash
 REBUILD_IMAGES=1 npm run build
 ```
 
-В Windows PowerShell:
+In Windows PowerShell:
 
 ```powershell
 $env:REBUILD_IMAGES="1"; npm run build
 ```
 
-Происхождение и ограничения изображений описаны в `ASSETS.md`.
+Image provenance and limitations are documented in `ASSETS.md`.
 
-## Что хранится в браузере
+## Browser Storage
 
-`localStorage` используется только для темы, ID сохранённых проектов, параметров калькулятора и сохранённого расчёта. Контактные данные, сообщение формы и свободные заметки туда не записываются.
+`localStorage` is used only for the theme, saved project IDs, calculator parameters, and the saved estimate. Contact details, form messages, and free-form notes are never stored there.
 
-Кнопка «Очистить мой проект» удаляет подборку и расчёт. При недоступном `localStorage` сайт продолжает работать в памяти текущей сессии.
+The "Clear my project" action removes the saved selection and estimate. If `localStorage` is unavailable, the site continues to work in memory for the current session.
 
-## Важные ограничения
+## Important Limitations
 
-- FORMA — вымышленная компания; проекты и цены демонстрационные.
-- Форма не отправляет заявки и не создаёт бронирование.
-- Изображения — AI-концепты, а не фотографии реализованных объектов.
-- Цель интерфейса — WCAG 2.2 AA, но это не сертифицированное заявление о полном соответствии.
-- Русский текст дополнительно отредактирован по смыслу; чешский также прошёл ручную языковую правку, однако переводы не выдаются за профессиональную вычитку носителями языка.
-- Перед реальным коммерческим запуском нужны отдельные backend, privacy/legal review, security headers/CSP, мониторинг, резервное копирование и проверка реального контента/цен.
+- FORMA is a fictional company; projects and prices are for demonstration only.
+- The form does not submit leads or create bookings.
+- The images are AI-generated concepts, not photographs of completed projects.
+- The interface targets WCAG 2.2 AA, but this is not a certified compliance statement.
+- The Russian and Czech copy has been manually edited, but the translations are not presented as professional native-speaker proofreading.
+- A real commercial launch would require a backend, privacy and legal review, security headers/CSP, monitoring, backups, and verification of all real content and pricing.
