@@ -1,0 +1,33 @@
+import {notFound} from 'next/navigation';
+import {Suspense} from 'react';
+import type {Metadata} from 'next';
+import {L,isLocale,locales,t,type Locale} from '@/lib/i18n';
+import {projects,services} from '@/lib/content';
+import {articles} from '@/lib/articles';
+import {routes} from '@/lib/routes';
+import {Home,Footer,PageHeading,ProjectPage,ServicesPage,ServicePage,ProcessPage,AboutPage,JournalPage,ArticlePage,PolicyPage} from '@/components/editorial';
+import {Catalogue} from '@/components/projects';
+import {Estimator,MyProject} from '@/components/estimate';
+import {ContactForm} from '@/components/contact';
+import {SupportChat} from '@/components/support-chat';
+type Props={params:Promise<{locale:string;path?:string[]}>};
+export const dynamicParams=false;
+export function generateStaticParams(){return locales.flatMap(locale=>routes.map(route=>({locale,path:route?route.split('/'):[]})));}
+function pageInfo(locale:Locale,path:string){const p=projects.find(p=>path===`projects/${p.slug}`);if(p)return{title:p.title[locale],description:p.summary[locale]};const s=services.find(s=>path===`services/${s.slug}`);if(s)return{title:s.title[locale],description:s.intro[locale]};const a=articles.find(a=>path===`journal/${a.slug}`);if(a)return{title:a.title[locale],description:a.excerpt[locale]};const titles:Record<string,string>={'':L('A home designed around you','Domov navržený pro vás','Дом, созданный для вас')[locale],projects:t(locale,'projects'),services:t(locale,'services'),process:t(locale,'process'),estimate:t(locale,'estimate'),'my-project':t(locale,'myProject'),about:t(locale,'about'),journal:t(locale,'journal'),contact:t(locale,'contact'),privacy:t(locale,'privacy'),accessibility:t(locale,'accessibility')};return{title:titles[path],description:L('Thoughtful interiors, considered renovations and practical planning. Explore the FORMA portfolio concept.','Promyšlené interiéry, pečlivé renovace a praktické plánování. Prohlédněte si portfoliový projekt FORMA.','Продуманные интерьеры, ремонт и понятное планирование. Познакомьтесь с портфолио-проектом FORMA.')[locale]};}
+export async function generateMetadata({params}:Props):Promise<Metadata>{const{locale,path=[]}=await params;const route=path.join('/');if(!isLocale(locale)||!routes.includes(route))return{title:'404 | FORMA'};const info=pageInfo(locale,route),suffix=route?`/${route}`:'';const canonical=`/${locale}${suffix}/`;return{...info,alternates:{canonical,languages:{...Object.fromEntries(locales.map(l=>[l,`/${l}${suffix}/`])),'x-default':`/en${suffix}/`}},openGraph:{title:`${info.title} | FORMA`,description:info.description,url:canonical,type:'website',locale:{en:'en_US',cs:'cs_CZ',ru:'ru_RU'}[locale],images:[{url:'/images/projects/oak-residence/cover.png',width:1536,height:1024,alt:projects[0].alts[0][locale]}]},robots:{index:false,follow:true}};}
+export default async function Page({params}:Props){const{locale,path=[]}=await params;const route=path.join('/');if(!isLocale(locale)||!routes.includes(route))notFound();let body:React.ReactNode;const info=pageInfo(locale,route);
+ if(route==='')body=<Home locale={locale}/>;
+ else if(route==='projects')body=<div className="container page-bottom"><PageHeading locale={locale} kicker={t(locale,'projects')} title={t(locale,'projects')} description={L('Four concept projects with different layouts, materials and levels of renovation. Use the filters to compare them.','Čtyři koncepční projekty s různými dispozicemi, materiály a rozsahem renovace. Pomocí filtrů je můžete porovnat.','Четыре концептуальных проекта с разными планировками, материалами и объёмом работ. Используйте фильтры, чтобы сравнить их.')[locale]}/><Catalogue locale={locale}/></div>;
+ else if(route.startsWith('projects/'))body=<ProjectPage locale={locale} project={projects.find(p=>p.slug===path[1])!}/>;
+ else if(route==='services')body=<ServicesPage locale={locale}/>;
+ else if(route.startsWith('services/'))body=<ServicePage locale={locale} service={services.find(s=>s.slug===path[1])!}/>;
+ else if(route==='process')body=<ProcessPage locale={locale}/>;
+ else if(route==='about')body=<AboutPage locale={locale}/>;
+ else if(route==='journal')body=<JournalPage locale={locale}/>;
+ else if(route.startsWith('journal/'))body=<ArticlePage locale={locale} article={articles.find(a=>a.slug===path[1])!}/>;
+ else if(route==='estimate')body=<div className="container page-bottom"><PageHeading locale={locale} kicker={t(locale,'estimateLabel')} title={L('Renovation budget','Rozpočet renovace','Бюджет ремонта')[locale]} description={L('Choose the property type, area and current condition to see an illustrative cost range.','Zvolte typ nemovitosti, plochu a současný stav a zobrazí se orientační cenové rozmezí.','Укажите тип объекта, площадь и текущее состояние — калькулятор покажет ориентировочный диапазон стоимости.')[locale]}/><Estimator locale={locale}/></div>;
+ else if(route==='my-project')body=<div className="container page-bottom"><PageHeading locale={locale} kicker={t(locale,'myProject')} title={t(locale,'myProject')} description={L('Saved projects and your latest renovation estimate are kept here in this browser.','Tady najdete uložené projekty a poslední orientační odhad uložený v tomto prohlížeči.','Здесь собраны сохранённые проекты и последний расчёт, сохранённый в этом браузере.')[locale]}/><MyProject locale={locale}/></div>;
+ else if(route==='contact')body=<div className="container page-bottom"><PageHeading locale={locale} kicker={t(locale,'contact')} title={t(locale,'formTitle')} description={t(locale,'formIntro')}/><ContactForm locale={locale} enabled={process.env.SITE_MODE!=='production'}/></div>;
+ else body=<PolicyPage locale={locale} type={route as 'privacy'|'accessibility'}/>;
+ return <><main id="main"><Suspense fallback={<div className="container loading-state" role="status">{t(locale,'loading')}</div>}>{body}</Suspense></main><Footer locale={locale}/><SupportChat locale={locale}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'WebPage',name:info.title,description:info.description,inLanguage:locale,isPartOf:{'@type':'WebSite',name:'FORMA — Portfolio concept'}}).replace(/</g,'\\u003c')}}/></>;
+}
