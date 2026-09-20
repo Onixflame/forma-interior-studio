@@ -131,3 +131,43 @@ test('saving a project gives a short visible confirmation',async({page})=>{
  await expect(page.locator('.save-toast')).toContainText('Добавлено в «Мой проект»');
  await expect(page.locator('.save-toast')).toBeVisible();
 });
+
+test('mobile home sections stay in a clean single-column flow',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto('/ru/');
+ const assertInside=async(parent:string,child:string)=>{
+  const parents=page.locator(parent);const count=await parents.count();
+  for(let i=0;i<count;i++){
+   const box=await parents.nth(i).boundingBox();const childBox=await parents.nth(i).locator(child).boundingBox();
+   expect(box,`${parent} ${i} box`).not.toBeNull();expect(childBox,`${child} in ${parent} ${i}`).not.toBeNull();
+   if(box&&childBox){expect(childBox.x).toBeGreaterThanOrEqual(box.x-1);expect(childBox.x+childBox.width).toBeLessThanOrEqual(box.x+box.width+1);}
+  }
+ };
+ await expect(page.locator('.home-services .service-tile')).toHaveCount(3);
+ await assertInside('.home-services .service-tile','h3');
+ await assertInside('.home-services .service-tile','p');
+ await assertInside('.home-services .service-tile','.text-link');
+ await expect(page.locator('.process-overview>div')).toHaveCount(5);
+ await expect(page.locator('.detail-feature-panel')).toBeVisible();
+ await expect(page.locator('.faq-section')).toBeVisible();
+ await expect(page.locator('.final-cta')).toBeVisible();
+ const grids=await page.evaluate(()=>({
+  services:getComputedStyle(document.querySelector('.home-services .service-grid')!).gridTemplateColumns,
+  process:getComputedStyle(document.querySelector('.process-overview')!).gridTemplateColumns,
+  detail:getComputedStyle(document.querySelector('.detail-feature-panel')!).gridTemplateColumns,
+  faq:getComputedStyle(document.querySelector('.faq-section')!).gridTemplateColumns,
+  cta:getComputedStyle(document.querySelector('.final-cta')!).gridTemplateColumns,
+ }));
+ for(const [name,value] of Object.entries(grids))expect(value,`${name} should resolve to one mobile column`).not.toContain(' ');
+ expect(await page.evaluate(()=>Math.max(document.documentElement.scrollWidth,document.body.scrollWidth))).toBeLessThanOrEqual(390);
+});
+
+test('services comparison becomes stacked cards on mobile',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto('/ru/services/');
+ await expect(page.locator('.service-compare-table')).toBeHidden();
+ await expect(page.locator('.service-compare-mobile article')).toHaveCount(3);
+ await expect(page.locator('.service-compare-mobile')).toContainText('Дизайн интерьера');
+ await expect(page.locator('.service-compare-mobile')).toContainText('Ремонт под ключ');
+ await expect(page.locator('.service-compare-mobile')).toContainText('Комплектация и декор');
+});
