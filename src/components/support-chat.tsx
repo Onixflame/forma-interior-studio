@@ -6,8 +6,8 @@ import {Icon} from './icons';
 
 type Message={id:number;from:'user'|'assistant';text:string;language:SupportLanguage};
 const ui={
- title:L('FORMA support','Podpora FORMA','Поддержка FORMA'),
- subtitle:L('Demo assistant · no real operator','Ukázkový asistent · bez skutečného operátora','Демо-помощник · без реального оператора'),
+ title:L('Ask FORMA','Zeptat se FORMA','Спросить FORMA'),
+ subtitle:L('Demo assistant · local only','Ukázkový asistent · pouze lokálně','Демо-помощник · работает локально'),
  open:L('Open support chat','Otevřít chat podpory','Открыть чат поддержки'),
  close:L('Close support chat','Zavřít chat podpory','Закрыть чат поддержки'),
  placeholder:L('Write a message…','Napište zprávu…','Напишите сообщение…'),
@@ -34,6 +34,6 @@ export function SupportChat({locale}:{locale:Locale}){
    <form className="support-form" onSubmit={submit}><input ref={inputRef} value={value} maxLength={600} onChange={e=>setValue(e.target.value)} placeholder={ui.placeholder[locale]} aria-label={ui.placeholder[locale]}/><button type="submit" className="button small" disabled={!value.trim()||typing}>{ui.send[locale]}</button></form>
    <p className="support-note">{ui.note[locale]}</p>
   </section>}
-  <button type="button" className="support-launcher" onClick={()=>setOpen(v=>!v)} aria-expanded={open} aria-label={open?ui.close[locale]:ui.open[locale]}><span className="support-dot" aria-hidden="true"/>{open?<Icon name="close"/>:<span>{L('Chat','Chat','Чат')[locale]}</span>}</button>
+  <button type="button" className="support-launcher" onClick={()=>setOpen(v=>!v)} aria-expanded={open} aria-label={open?ui.close[locale]:ui.open[locale]}><span className="support-dot" aria-hidden="true"/>{open?<Icon name="close"/>:<span>{L('Ask','Dotaz','Вопрос')[locale]}</span>}</button>
  </div>;
 }
