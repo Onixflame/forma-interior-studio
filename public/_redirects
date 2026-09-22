@@ -1,1 +1,1 @@
-/ /en/ 302
+# Root is served by the exported Next.js page so social crawlers can read Open Graph metadata.
