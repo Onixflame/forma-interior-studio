@@ -1,3 +1,12 @@
 import type {MetadataRoute} from 'next';
 export const dynamic='force-static';
-export default function robots():MetadataRoute.Robots{return{rules:{userAgent:'*',allow:'/'},sitemap:`${process.env.NEXT_PUBLIC_SITE_URL||'http://localhost:3000'}/sitemap.xml`};}
+export default function robots():MetadataRoute.Robots{
+ const base=(process.env.NEXT_PUBLIC_SITE_URL||'https://stanislav-design-studio.pages.dev').replace(/\/$/,'');
+ return{
+  rules:[
+   {userAgent:'TelegramBot',allow:'/'},
+   {userAgent:'*',allow:'/'}
+  ],
+  sitemap:`${base}/sitemap.xml`
+ };
+}

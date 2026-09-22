@@ -9,7 +9,7 @@ export const metadata:Metadata={
   metadataBase:new URL(process.env.NEXT_PUBLIC_SITE_URL||'https://stanislav-design-studio.pages.dev'),
   title:{default:'FORMA — Interior Design & Renovation',template:'%s | FORMA'},
   description:'A portfolio website for a fictional interior design studio, featuring residential projects, interior design, renovation, furnishing and an interactive budget calculator.',
-  robots:{index:false,follow:true},
+  robots:{index:true,follow:true},
   icons:{icon:'/icon.svg'},
   openGraph:{
     title:'FORMA — Interior Design & Renovation Portfolio',
