@@ -7,22 +7,21 @@ import {ProjectProvider} from '@/components/state';
 import {Header} from '@/components/navigation';
 export const metadata:Metadata={
   metadataBase:new URL(process.env.NEXT_PUBLIC_SITE_URL||'https://stanislav-design-studio.pages.dev'),
-  title:{default:'FORMA — Considered spaces',template:'%s | FORMA'},
-  description:'A fictional interior design studio website. Multilingual portfolio project with curated project galleries, service pages, articles, and a renovation budget calculator.',
+  title:{default:'FORMA — Interior Design & Renovation',template:'%s | FORMA'},
+  description:'A portfolio website for a fictional interior design studio, featuring residential projects, interior design, renovation, furnishing and an interactive budget calculator.',
   robots:{index:false,follow:true},
   icons:{icon:'/icon.svg'},
   openGraph:{
-    title:'FORMA — Interior Design Portfolio Project',
-    description:'A fictional interior design studio website. Multilingual portfolio project with curated project galleries, service pages, articles, and a renovation budget calculator.',
+    title:'FORMA — Interior Design & Renovation Portfolio',
+    description:'A portfolio website for a fictional interior design studio, featuring residential projects, interior design, renovation, furnishing and an interactive budget calculator.',
     url:'/',
-    siteName:'FORMA',
     type:'website',
-    images:[{url:'/og-image.jpg',width:1200,height:630,alt:'FORMA interior design portfolio preview'}]
+    images:[{url:'/og-image.jpg',width:1200,height:630,alt:'FORMA interior design studio — selected projects'}]
   },
   twitter:{
     card:'summary_large_image',
-    title:'FORMA — Interior Design Portfolio Project',
-    description:'A fictional interior design studio website. Multilingual portfolio project with curated project galleries, service pages, articles, and a renovation budget calculator.',
+    title:'FORMA — Interior Design & Renovation Portfolio',
+    description:'A portfolio website for a fictional interior design studio, featuring residential projects, interior design, renovation, furnishing and an interactive budget calculator.',
     images:['/og-image.jpg']
   }
 };

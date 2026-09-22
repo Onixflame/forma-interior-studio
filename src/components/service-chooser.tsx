@@ -14,21 +14,21 @@ const situations:{id:Situation;title:ReturnType<typeof L>;text:ReturnType<typeof
     title:L('I have a new or empty property','Mám nový nebo prázdný prostor','У меня новая квартира или помещение без отделки'),
     text:L('Start with the layout and interior concept before committing to finishes or construction.','Začněte dispozicí a návrhem interiéru ještě před výběrem povrchů nebo realizací.','Сначала стоит продумать планировку и интерьерную концепцию, а уже потом переходить к отделке и ремонту.'),
     service:'interior-design',
-    note:L('Best starting point: interior design. Full renovation can follow once the scope is defined.','Nejlepší začátek: návrh interiéru. Kompletní renovace může navázat po stanovení rozsahu.','Лучший первый шаг — дизайн интерьера. После согласования проекта можно переходить к ремонту под ключ.'),
+    note:L('Start with interior design. A renovation scope can be added once the layout and priorities are agreed.','Začněte návrhem interiéru. Rozsah renovace lze doplnit po schválení dispozice a priorit.','Начните с дизайна интерьера. Объём ремонта можно определить после согласования планировки и приоритетов.'),
   },
   {
     id:'refresh',
     title:L('My home needs a substantial update','Domov potřebuje výraznou změnu','Жилью нужен серьёзный ремонт'),
     text:L('Use a coordinated renovation path when finishes, systems and several rooms need to change together.','Koordinovaná renovace dává smysl, pokud se mění povrchy, rozvody i více místností současně.','Подходит, когда нужно комплексно обновить отделку, несколько помещений и связать все работы в один процесс.'),
     service:'full-renovation',
-    note:L('Best starting point: full renovation, with the scope verified before a real quote.','Nejlepší začátek: kompletní renovace s ověřením rozsahu před skutečnou nabídkou.','Лучший вариант — ремонт под ключ с предварительным уточнением реального объёма работ.'),
+    note:L('Start with a full-renovation scope, then verify the property before requesting a real quote.','Začněte rozsahem kompletní renovace a před skutečnou nabídkou ověřte stav objektu.','Начните с объёма полного ремонта, а перед реальной сметой проверьте состояние объекта.'),
   },
   {
     id:'finish',
     title:L('The space is finished, but it does not feel complete','Prostor je hotový, ale něco mu chybí','Ремонт уже сделан, но интерьер выглядит незавершённым'),
     text:L('Focus on furniture, lighting, textiles and the final layer instead of reopening the whole renovation.','Zaměřte se na nábytek, světla, textilie a poslední vrstvu místo nové kompletní renovace.','Лучше сосредоточиться на мебели, свете, текстиле и декоре, не затевая новый ремонт.'),
     service:'furnishing',
-    note:L('Best starting point: furnishing & styling. Existing pieces can be incorporated into the new scheme.','Nejlepší začátek: vybavení a styling. Stávající kusy lze začlenit do nového řešení.','Лучший вариант — комплектация и декор. Подходящие существующие предметы можно сохранить.'),
+    note:L('Start with furnishing & styling. Existing pieces can be kept and coordinated with the new selection.','Začněte vybavením a stylingem. Stávající kusy lze zachovat a sladit s novým výběrem.','Начните с комплектации и декора. Существующие предметы можно сохранить и согласовать с новым подбором.'),
   },
 ];
 
@@ -41,7 +41,7 @@ export function ServiceChooser({locale}:{locale:Locale}){
     <div className="service-chooser-copy">
       <span className="eyebrow">{L('FIND YOUR STARTING POINT','NAJDĚTE VÝCHOZÍ BOD','С ЧЕГО НАЧАТЬ')[locale]}</span>
       <h2 id="service-chooser-title">{L('Which situation is closest to yours?','Která situace je vám nejbližší?','Какая ситуация ближе к вашей?')[locale]}</h2>
-      <p>{L('Choose the situation, not the service name. The recommendation changes without taking you away from the page.','Vyberte situaci, ne název služby. Doporučení se změní přímo na stránce.','Выберите ситуацию, а не название услуги. Рекомендация изменится прямо на странице.')[locale]}</p>
+      <p>{L('Choose the situation that matches your space. The recommendation updates on this page.','Vyberte situaci, která odpovídá vašemu prostoru. Doporučení se aktualizuje přímo na této stránce.','Выберите ситуацию, которая подходит вашему объекту. Рекомендация обновится прямо на странице.')[locale]}</p>
     </div>
     <div className="service-chooser-ui">
       <div className="situation-tabs" role="tablist" aria-label={L('Project situation','Situace projektu','Ситуация проекта')[locale]}>

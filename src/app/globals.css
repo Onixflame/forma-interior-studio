@@ -732,3 +732,48 @@ p{overflow-wrap:break-word;text-wrap:pretty}
   .material-line{margin-bottom:17px}
   .support-launcher{min-width:56px;height:40px;padding:0 10px;font-size:9px}
 }
+
+/* === Final visual QA pass ===
+   Reduce template-like decoration and fix alignment on project detail pages. */
+.hero-copy{background:var(--surface)}
+.hero-copy:before,.hero-copy:after{display:none!important}
+.page-heading,.services-masthead,.journal-masthead{background:var(--surface)}
+.final-cta{box-shadow:none}
+
+/* Keep both sides of the project brief at the same typographic weight. */
+.project-story{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.project-story-block p,.project-story-block .lead{font-size:17px;line-height:1.72}
+.project-story-block h2{max-width:520px}
+
+/* Material specification: both columns now occupy the full framed block.
+   The previous right-hand grid only used the top half of the section. */
+.material-section{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(0,1.18fr);gap:0!important;padding:0!important;align-items:stretch!important;background:var(--surface);border:1px solid var(--line)}
+.material-section>div:first-child{padding:36px 40px 38px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.material-section>div:first-child>p{margin-top:16px;max-width:46ch}
+.material-list{align-self:stretch;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:0;border-left:1px solid var(--line);min-width:0}
+.material-item,.material-item+.material-item{display:flex;flex-direction:column;justify-content:center;min-width:0;min-height:100%;padding:34px 24px;border-bottom:0}
+.material-item+.material-item{border-left:1px solid var(--line)}
+.material-line{margin-bottom:18px}
+.material-item h3{overflow-wrap:anywhere;text-wrap:balance}
+
+/* Scope rows align from the same top edge and long translated copy wraps cleanly. */
+.project-services{align-items:start}
+.service-row{min-width:0}
+.service-row>span{min-width:0}
+.service-row h3{overflow-wrap:anywhere;text-wrap:balance}
+.service-row p{max-width:62ch}
+
+/* A little more restraint in repeated framed surfaces. */
+.project-title,.project-facts,.journal-card,.service-card-page{box-shadow:none}
+.page-heading-grid p,.masthead-split p{text-wrap:pretty}
+
+@media(max-width:760px){
+  .project-story{grid-template-columns:1fr}
+  .project-story-block p,.project-story-block .lead{font-size:16px;line-height:1.7}
+  .material-section{grid-template-columns:1fr!important;padding:0!important;gap:0!important}
+  .material-section>div:first-child{padding:27px 22px 28px}
+  .material-list{grid-template-columns:1fr;border-left:0;border-top:1px solid var(--line)}
+  .material-item,.material-item+.material-item{display:block;min-height:0;padding:19px 22px;border-left:0;border-bottom:1px solid var(--line)}
+  .material-item:last-child{border-bottom:0}
+  .material-line{margin-bottom:13px}
+}
